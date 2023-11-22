@@ -9,6 +9,28 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  String? _validateUser(final String? user) {
+    if (user != null) {
+      return (user.isNotEmpty && user.length <= 20 && !user.endsWith(' '))
+          ? null
+          : 'Usuário inválido';
+    }
+
+    return 'Insira um usuário';
+  }
+
+  String? _validatePassword(final String? password) {
+    final passwordRegex = RegExp(r'^([a-zA-Z0-9]{2,20})(?!\s)$');
+
+    if (password != null) {
+      return (passwordRegex.hasMatch(password)) ? null : 'Senha inválida';
+    }
+
+    return 'Insira uma senha';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,77 +47,86 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: Column(
-                  children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Usuário',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    TextFormField(
-                      onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                      decoration: const InputDecoration(
-                        constraints: BoxConstraints(maxHeight: 48.0),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.person, color: Colors.black),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Senha',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        constraints: BoxConstraints(maxHeight: 48.0),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.lock, color: Colors.black),
-                      ),
-                    ),
-                    const SizedBox(height: 32.0),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        backgroundColor: const MaterialStatePropertyAll(Color(0xFF44BD6E)),
-                        fixedSize: MaterialStatePropertyAll(
-                          Size(MediaQuery.of(context).size.width * 0.35, 40.0),
-                        ),
-                        shape: MaterialStatePropertyAll(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(48.0),
+              Expanded(
+                flex: 8,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  child: Center(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Usuário',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 8.0),
+                          TextFormField(
+                            validator: _validateUser,
+                            onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                            decoration: const InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(),
+                              prefixIcon: Icon(Icons.person, color: Colors.black),
+                            ),
+                          ),
+                          const SizedBox(height: 16.0),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Senha',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          TextFormField(
+                            validator: _validatePassword,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(),
+                              prefixIcon: Icon(Icons.lock, color: Colors.black),
+                            ),
+                          ),
+                          const SizedBox(height: 32.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              _formKey.currentState?.validate();
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: const MaterialStatePropertyAll(Color(0xFF44BD6E)),
+                              fixedSize: MaterialStatePropertyAll(
+                                Size(MediaQuery.of(context).size.width * 0.35, 40.0),
+                              ),
+                              shape: MaterialStatePropertyAll(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(48.0),
+                                ),
+                              ),
+                            ),
+                            child: const Text('Entrar'),
+                          ),
+                        ],
                       ),
-                      child: const Text('Entrar'),
                     ),
-                  ],
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
+              Expanded(
                 child: TextButton(
                   onPressed: () => launchUrlString(
                     'https://www.google.com.br',
@@ -117,5 +148,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-// Botão: 0xFF44BD6E
