@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_strings.dart';
 
 import '../shared/app_background.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  Widget _buildExclusionPopup() {
+  Widget _buildExclusionPopup(final BuildContext context) {
+    final strings = AppStrings.of(context);
+
     return AlertDialog(
-      title: Text('Excluir'),
-      content: Text('Tem certeza que deseja excluir? Esta ação não pode ser desfeita.'),
+      title: Text(strings.delete),
+      content: Text(strings.deleteDescription),
       actions: [
         TextButton(
           onPressed: () {},
           child: Text(
-            'NÃO',
-            style: TextStyle(
-              color: Colors.black,
-            ),
+            strings.no,
+            style: const TextStyle(color: Colors.black),
           ),
         ),
         TextButton(
           onPressed: () {},
           child: Text(
-            'SIM',
-            style: TextStyle(
-              color: Colors.red,
-            ),
+            strings.yes,
+            style: const TextStyle(color: Colors.red),
           ),
         ),
       ],
@@ -34,7 +33,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const errorBorder = OutlineInputBorder(borderSide: BorderSide(color: Colors.orangeAccent));
+
     final mediaQuery = MediaQuery.of(context);
+    final strings = AppStrings.of(context);
 
     return AppBackground(
       child: SingleChildScrollView(
@@ -87,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                           onPressed: () {
                             showDialog(
                               context: context,
-                              builder: (final context) => _buildExclusionPopup(),
+                              builder: (final context) => _buildExclusionPopup(context),
                             );
                           },
                           icon: const Icon(Icons.cancel),
@@ -102,12 +104,12 @@ class HomeScreen extends StatelessWidget {
             ),
             SizedBox(height: mediaQuery.size.height * 0.08),
             TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 label: Center(
                   child: Text(
-                    'Digite seu texto',
-                    style: TextStyle(
+                    strings.typeYourText,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: Colors.black,
@@ -116,10 +118,10 @@ class HomeScreen extends StatelessWidget {
                 ),
                 filled: true,
                 fillColor: Colors.white,
-                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                errorStyle: TextStyle(color: Colors.orangeAccent),
-                errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orangeAccent)),
-                focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.orangeAccent)),
+                border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                errorStyle: const TextStyle(color: Colors.orangeAccent),
+                errorBorder: errorBorder,
+                focusedErrorBorder: errorBorder,
               ),
             ),
           ],

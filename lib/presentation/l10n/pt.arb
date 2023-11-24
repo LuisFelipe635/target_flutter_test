@@ -1,0 +1,56 @@
+{
+  "@@locale": "pt",
+
+  "privacyPolicy": "Usuário",
+  "@privacyPolicy": {
+    "description": "Legenda do botão de política de privacidade"
+  },
+  "user": "Usuário",
+  "@user": {
+    "description": "Aponta a caixa de texto para digitar o usuário"
+  },
+  "invalidUser": "Usuário inválido",
+  "@invalidUser": {
+    "description": "Erro exibido quando o usuário é inválido"
+  },
+  "blankUser": "Insira um usuário",
+  "@blankUser": {
+    "description": "Erro exibido quando o usuário está em branco"
+  },
+  "password": "Senha",
+  "@password": {
+    "description": "Aponta a caixa de texto para digitar a senha"
+  },
+  "invalidPassword": "Senha inválida",
+  "@invalidPassword": {
+    "description": "Erro exibido quando a senha é inválida"
+  },
+  "blankPassword": "Insira uma senha",
+  "@blankPassword": {
+    "description": "Erro exibido quando a senha está em branco"
+  },
+  "logIn": "Entrar",
+  "@logIn": {
+    "description": "Legenda do botão que valida os campos de texto e avança para a próxima tela"
+  },
+  "typeYourText": "Digite seu texto",
+  "@typeYourText": {
+    "description": "Indica onde deve ser digitado um texto para ser salvo"
+  },
+  "delete": "Excluir",
+  "@delete": {
+    "description": "Título do pop-up de exclusão de um texto salvo"
+  },
+  "deleteDescription": "Tem certeza? Esta ação não pode ser desfeita.",
+  "@deleteDescription": {
+    "description": "Mensagem exibida dentro do pop-up de exclusão de um texto salvo"
+  },
+  "no": "NÃO",
+  "@no": {
+    "description": "Ação que cancela a exclusão de um texto"
+  },
+  "yes": "SIM",
+  "@yes": {
+    "description": "Ação que confirma a exclusão de um texto"
+  }
+}

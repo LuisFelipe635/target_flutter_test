@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_strings.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AppBackground extends StatelessWidget {
@@ -42,9 +43,9 @@ class AppBackground extends StatelessWidget {
                     'https://www.google.com.br',
                     mode: LaunchMode.externalApplication,
                   ),
-                  child: const Text(
-                    'Política de Privacidade',
-                    style: TextStyle(
+                  child: Text(
+                    AppStrings.of(context).privacyPolicy,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w300,
                     ),

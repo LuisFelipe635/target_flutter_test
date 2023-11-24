@@ -1,0 +1,17 @@
+{
+  "@@locale": "en",
+
+  "privacyPolicy": "Privacy Policy",
+  "user": "User",
+  "invalidUser": "Invalid user",
+  "blankUser": "Insert an user",
+  "password": "Password",
+  "invalidPassword": "Invalid password",
+  "blankPassword": "Insert a password",
+  "logIn": "Log in",
+  "typeYourText": "Type your text",
+  "delete": "Delete",
+  "deleteDescription": "Are you sure? This action can not be undone.",
+  "no": "NO",
+  "yes": "YES"
+}

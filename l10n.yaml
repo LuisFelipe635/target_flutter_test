@@ -1,0 +1,6 @@
+arb-dir: lib/presentation/l10n
+template-arb-file: pt.arb
+output-localization-file: app_strings.dart
+output-class: AppStrings
+preferred-supported-locales: [pt, en]
+nullable-getter: false

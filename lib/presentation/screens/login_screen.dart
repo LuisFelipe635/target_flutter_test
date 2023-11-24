@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_strings.dart';
 
 import '../shared/app_background.dart';
 
@@ -11,23 +12,30 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  late final AppStrings _strings;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _strings = AppStrings.of(context);
+  }
 
   String? _validateUser(final String? user) {
     if (user != null) {
-      return (user.isNotEmpty && user.length <= 20 && !user.endsWith(' ')) ? null : 'Usuário inválido';
+      return (user.isNotEmpty && user.length <= 20 && !user.endsWith(' ')) ? null : _strings.invalidUser;
     }
 
-    return 'Insira um usuário';
+    return _strings.blankUser;
   }
 
   String? _validatePassword(final String? password) {
     final passwordRegex = RegExp(r'^([a-zA-Z0-9]{2,20})(?!\s)$');
 
     if (password != null) {
-      return (passwordRegex.hasMatch(password)) ? null : 'Senha inválida';
+      return (passwordRegex.hasMatch(password)) ? null : _strings.invalidPassword;
     }
 
-    return 'Insira uma senha';
+    return _strings.blankPassword;
   }
 
   Widget _createTextFieldLabel(final String label) {
@@ -63,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _createTextFieldLabel('Usuário'),
+            _createTextFieldLabel(_strings.user),
             const SizedBox(height: 8.0),
             TextFormField(
               validator: _validateUser,
@@ -71,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
               decoration: _createInputDecoration(withIcon: Icons.person),
             ),
             const SizedBox(height: 16.0),
-            _createTextFieldLabel('Senha'),
+            _createTextFieldLabel(_strings.password),
             const SizedBox(height: 8.0),
             TextFormField(
               validator: _validatePassword,
@@ -98,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              child: const Text('Entrar'),
+              child: Text(_strings.logIn),
             ),
           ],
         ),
