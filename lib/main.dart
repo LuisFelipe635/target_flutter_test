@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_strings.dart';
 
-import 'presentation/screens/home_screen.dart';
-import 'presentation/screens/login_screen.dart';
+import 'configuration/application_composition_root.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,18 +12,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appCompositionRoot = ApplicationCompositionRoot.instance;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Target Test',
-      home: const LoginScreen(),
+      home: appCompositionRoot.newLoginScreen(),
       routes: {
-        '/home': (final context) => const HomeScreen(),
+        '/home': (final context) => appCompositionRoot.newHomeScreen(),
       },
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      localizationsDelegates: AppStrings.localizationsDelegates,
       supportedLocales: const [
         Locale('pt'),
         Locale('en'),
