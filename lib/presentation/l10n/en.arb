@@ -10,6 +10,7 @@
   "blankPassword": "Insert a password",
   "logIn": "Log in",
   "typeYourText": "Type your text",
+  "typeYourTextError": "Insert a text",
   "delete": "Delete",
   "deleteDescription": "Are you sure? This action can not be undone.",
   "no": "NO",

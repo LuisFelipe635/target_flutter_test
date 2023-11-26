@@ -1,7 +1,7 @@
 {
   "@@locale": "pt",
 
-  "privacyPolicy": "Usuário",
+  "privacyPolicy": "Política de Privacidade",
   "@privacyPolicy": {
     "description": "Legenda do botão de política de privacidade"
   },
@@ -36,6 +36,10 @@
   "typeYourText": "Digite seu texto",
   "@typeYourText": {
     "description": "Indica onde deve ser digitado um texto para ser salvo"
+  },
+  "typeYourTextError": "Insira um texto",
+  "@typeYourTextError": {
+    "description": "Erro exibido quando o campo de texto dispara a validação de uma entrada vazia"
   },
   "delete": "Excluir",
   "@delete": {
