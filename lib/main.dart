@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Target Test',
       home: appCompositionRoot.newLoginScreen(),
       routes: {
-        '/home': (final context) => appCompositionRoot.newHomeScreen(),
+        '/home': (final context) => appCompositionRoot.newMainScreen(),
       },
       localizationsDelegates: AppStrings.localizationsDelegates,
       supportedLocales: const [
