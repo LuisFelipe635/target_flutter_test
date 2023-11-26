@@ -18,6 +18,7 @@ dependencies:
   url_launcher: ^6.2.1
   shared_preferences: ^2.2.2
   mobx: ^2.2.1
+  flutter_mobx: ^2.2.0
   intl: ^0.18.1
 
 dev_dependencies:
