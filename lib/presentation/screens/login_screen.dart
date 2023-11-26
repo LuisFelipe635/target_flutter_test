@@ -12,30 +12,30 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  late final AppStrings _strings;
+  AppStrings? _strings;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _strings = AppStrings.of(context);
+    _strings ??= AppStrings.of(context);
   }
 
   String? _validateUser(final String? user) {
-    if (user != null) {
-      return (user.isNotEmpty && user.length <= 20 && !user.endsWith(' ')) ? null : _strings.invalidUser;
+    if (user == null || user.isEmpty) {
+      return _strings?.blankUser;
     }
 
-    return _strings.blankUser;
+    return (user.length <= 20 && !user.endsWith(' ')) ? null : _strings?.invalidUser;
   }
 
   String? _validatePassword(final String? password) {
     final passwordRegex = RegExp(r'^([a-zA-Z0-9]{2,20})(?!\s)$');
 
-    if (password != null) {
-      return (passwordRegex.hasMatch(password)) ? null : _strings.invalidPassword;
+    if (password == null || password.isEmpty) {
+      return _strings?.blankPassword;
     }
 
-    return _strings.blankPassword;
+    return (passwordRegex.hasMatch(password)) ? null : _strings?.invalidPassword;
   }
 
   Widget _createTextFieldLabel(final String label) {
@@ -71,15 +71,16 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _createTextFieldLabel(_strings.user),
+            _createTextFieldLabel(_strings?.user ?? ''),
             const SizedBox(height: 8.0),
             TextFormField(
               validator: _validateUser,
+              textInputAction: TextInputAction.next,
               onEditingComplete: () => FocusScope.of(context).nextFocus(),
               decoration: _createInputDecoration(withIcon: Icons.person),
             ),
             const SizedBox(height: 16.0),
-            _createTextFieldLabel(_strings.password),
+            _createTextFieldLabel(_strings?.password ?? ''),
             const SizedBox(height: 8.0),
             TextFormField(
               validator: _validatePassword,
@@ -106,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              child: Text(_strings.logIn),
+              child: Text(_strings?.logIn ?? ''),
             ),
           ],
         ),
