@@ -18,6 +18,20 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  static const _cardBorderRadius = Radius.elliptical(6.0, 48.0);
+  static const _cardWidthFactor = 0.8;
+  static const _cardHeightFactor = 0.5;
+  static const _listVerticalPadding = 8.0;
+  static const _listHorizontalPadding = 8.0;
+  static const _dividerThickness = 2.0;
+  static const _mainContentFlex = 5;
+  static const _maxTextLines = 1;
+  static const _fontSize = 18.0;
+  static const _iconSize = 36.0;
+  static const _animationDuration = Duration(milliseconds: 100);
+  static const _spacerHeightFactor = 0.08;
+  static const _textFieldBorderRadius = BorderRadius.all(Radius.circular(8.0));
+
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -99,35 +113,35 @@ class _MainScreenState extends State<MainScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: mediaQuery.size.width * 0.8,
-              height: mediaQuery.size.height * 0.5,
+              width: mediaQuery.size.width * _cardWidthFactor,
+              height: mediaQuery.size.height * _cardHeightFactor,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.horizontal(
-                  left: Radius.elliptical(6.0, 48.0),
-                  right: Radius.elliptical(6.0, 48.0),
+                  left: _cardBorderRadius,
+                  right: _cardBorderRadius,
                 ),
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 12.0,
+                  vertical: _listVerticalPadding,
+                  horizontal: _listHorizontalPadding,
                 ),
                 child: Observer(
                   builder: (final context) => ListView.separated(
                     itemCount: widget._presenter.allData.length,
-                    separatorBuilder: (final context, final index) => const Divider(thickness: 2.0),
+                    separatorBuilder: (final context, final index) => const Divider(thickness: _dividerThickness),
                     itemBuilder: (final context, final index) => Row(
                       children: [
                         Expanded(
-                          flex: 5,
-                          child: Align(
+                          flex: _mainContentFlex,
+                          child: Center(
                             child: Text(
                               widget._presenter.allTexts[index] ?? '',
-                              maxLines: 1,
+                              maxLines: _maxTextLines,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: _fontSize,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -140,12 +154,12 @@ class _MainScreenState extends State<MainScreen> {
                               _textController.text = widget._presenter.allTexts[index] ?? '';
                               _scrollController.animateTo(
                                 mediaQuery.viewInsets.bottom,
-                                duration: const Duration(milliseconds: 100),
+                                duration: _animationDuration,
                                 curve: Curves.linear,
                               );
                             },
                             icon: const Icon(Icons.border_color),
-                            iconSize: 36.0,
+                            iconSize: _iconSize,
                           ),
                         ),
                         Flexible(
@@ -158,7 +172,7 @@ class _MainScreenState extends State<MainScreen> {
                               );
                             },
                             icon: const Icon(Icons.cancel),
-                            iconSize: 36.0,
+                            iconSize: _iconSize,
                             color: const Color(0xFFDC2F35),
                           ),
                         ),
@@ -168,7 +182,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
-            SizedBox(height: mediaQuery.size.height * 0.08),
+            SizedBox(height: mediaQuery.size.height * _spacerHeightFactor),
             Form(
               key: _formKey,
               child: TextFormField(
@@ -177,7 +191,7 @@ class _MainScreenState extends State<MainScreen> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  border: const OutlineInputBorder(borderRadius: _textFieldBorderRadius),
                   errorStyle: const TextStyle(color: Colors.orangeAccent),
                   errorBorder: errorBorder,
                   focusedErrorBorder: errorBorder,
@@ -187,7 +201,7 @@ class _MainScreenState extends State<MainScreen> {
                       strings.typeYourText,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: _fontSize,
                         color: Colors.black,
                       ),
                     ),

@@ -8,6 +8,8 @@ class AppBackground extends StatelessWidget {
     required final Widget child,
   }) : _child = child;
 
+  static const _horizontalPadding = 40.0;
+
   final Widget _child;
 
   @override
@@ -31,7 +33,7 @@ class AppBackground extends StatelessWidget {
               Expanded(
                 flex: 9,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  padding: const EdgeInsets.symmetric(horizontal: _horizontalPadding),
                   child: Center(
                     child: _child,
                   ),
