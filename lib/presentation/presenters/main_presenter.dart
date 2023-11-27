@@ -17,12 +17,13 @@ class MainPresenter with Store {
   late final Action _saveAction;
   late final Action _deleteDataAtIndexAction;
   late final Action _retrieveStoredDataAction;
-  final ObservableList<String?> _storedData = ObservableList();
-  final List<String> _storageKeys = [];
+  final ObservableMap<String, String?> _storedData = ObservableMap();
 
-  List<String?> get data => List.unmodifiable(_storedData);
+  Map<String, String?> get allData => Map.unmodifiable(_storedData);
 
-  int get _lastUsedIndex => int.tryParse(_storageKeys.last.characters.last) ?? 0;
+  List<String?> get allTexts => List.unmodifiable(_storedData.values);
+
+  int get _lastStoredIndex => (_storedData.keys.isNotEmpty) ? int.parse(_storedData.keys.last.characters.last) : 0;
 
   Action get save => _saveAction;
 
@@ -30,36 +31,33 @@ class MainPresenter with Store {
 
   Action get retrieveStoredData => _retrieveStoredDataAction;
 
-  Future<void> _save(final String data, {final bool isEdit = false, final int? index}) async {
+  Future<void> _save(final String newData, {final bool isEdit = false, final int? index}) async {
     if (isEdit && index != null) {
-      _storedData[index] = data;
-      final key = _storageKeys[index];
+      final dataUnderEdition = _storedData.entries.elementAt(index);
+      _storedData[dataUnderEdition.key] = newData;
 
-      await _repository.save(key, data);
+      await _repository.save(dataUnderEdition.key, newData);
     } else {
-      _storedData.add(data);
+      final key = '$_dataKeyPrefix${_lastStoredIndex + 1}';
 
-      await _repository.save('$_dataKeyPrefix${_lastUsedIndex + 1}', data);
+      _storedData.addAll({key: newData});
+
+      await _repository.save(key, newData);
     }
   }
 
   Future<void> _deleteDataAtIndex(final int index) async {
-    _storedData.removeAt(index);
+    final key = _storedData.entries.elementAt(index).key;
 
-    final key = _storageKeys[index];
+    _storedData.remove(key);
     await _repository.erase(key);
   }
 
   Future<void> _retrieveStoredData() async {
     final data = await _repository.retrieveData();
-    final keys = await _repository.retrieveKeys();
 
     if (data != null) {
       _storedData.addAll(data);
-    }
-
-    if (keys != null) {
-      _storageKeys.addAll(keys);
     }
   }
 }

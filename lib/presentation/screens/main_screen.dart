@@ -18,8 +18,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _textController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
 
   (bool, int) _existingDataEditionInformation = (false, 0);
 
@@ -31,6 +33,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
+    _formKey.currentState?.dispose();
+    _scrollController.dispose();
     _textController.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -68,6 +72,19 @@ class _MainScreenState extends State<MainScreen> {
     return (input != null && input.isNotEmpty) ? null : AppStrings.of(context).typeYourTextError;
   }
 
+  void _submit(final String input) {
+    if (_formKey.currentState?.validate() == true) {
+      if (_existingDataEditionInformation.$1) {
+        widget._presenter.save.call([input], {'isEdit': true, 'index': _existingDataEditionInformation.$2});
+        _existingDataEditionInformation = (false, 0);
+      } else {
+        widget._presenter.save.call([input]);
+      }
+    }
+    _textController.clear();
+    _focusNode.requestFocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     const errorBorder = OutlineInputBorder(borderSide: BorderSide(color: Colors.orangeAccent));
@@ -77,6 +94,7 @@ class _MainScreenState extends State<MainScreen> {
 
     return AppBackground(
       child: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -97,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 child: Observer(
                   builder: (final context) => ListView.separated(
-                    itemCount: widget._presenter.data.length,
+                    itemCount: widget._presenter.allData.length,
                     separatorBuilder: (final context, final index) => const Divider(thickness: 2.0),
                     itemBuilder: (final context, final index) => Row(
                       children: [
@@ -105,7 +123,7 @@ class _MainScreenState extends State<MainScreen> {
                           flex: 5,
                           child: Align(
                             child: Text(
-                              widget._presenter.data[index] ?? '',
+                              widget._presenter.allTexts[index] ?? '',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
@@ -119,8 +137,12 @@ class _MainScreenState extends State<MainScreen> {
                           child: IconButton(
                             onPressed: () {
                               _existingDataEditionInformation = (true, index);
-                              _textController.text = widget._presenter.data[index] ?? '';
-                              _focusNode.requestFocus();
+                              _textController.text = widget._presenter.allTexts[index] ?? '';
+                              _scrollController.animateTo(
+                                mediaQuery.viewInsets.bottom,
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.linear,
+                              );
                             },
                             icon: const Icon(Icons.border_color),
                             iconSize: 36.0,
@@ -147,42 +169,35 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             SizedBox(height: mediaQuery.size.height * 0.08),
-            TextFormField(
-              controller: _textController,
-              focusNode: _focusNode,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                errorStyle: const TextStyle(color: Colors.orangeAccent),
-                errorBorder: errorBorder,
-                focusedErrorBorder: errorBorder,
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                label: Center(
-                  child: Text(
-                    strings.typeYourText,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Colors.black,
+            Form(
+              key: _formKey,
+              child: TextFormField(
+                controller: _textController,
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  errorStyle: const TextStyle(color: Colors.orangeAccent),
+                  errorBorder: errorBorder,
+                  focusedErrorBorder: errorBorder,
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  label: Center(
+                    child: Text(
+                      strings.typeYourText,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),
+                textInputAction: TextInputAction.next,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: _validateInput,
+                onFieldSubmitted: _submit,
               ),
-              textInputAction: TextInputAction.next,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: _validateInput,
-              onFieldSubmitted: (final input) {
-                if (_existingDataEditionInformation.$1) {
-                  widget._presenter.save.call([input], {'isEdit': true, 'index': _existingDataEditionInformation.$2 });
-                  _existingDataEditionInformation = (false, 0);
-                } else {
-                  widget._presenter.save.call([input]);
-                }
-
-                _textController.clear();
-                _focusNode.requestFocus();
-              },
             ),
           ],
         ),
